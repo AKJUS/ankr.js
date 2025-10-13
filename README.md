@@ -55,7 +55,7 @@ Mainnet
 - Flare: `"flare"`
 - Gnosis Chain: `"gnosis"`
 - Scroll: `"scroll"`
-- Story: `"story_mainnet"`
+- Stellar: `"stellar"`
 - Linea: `"linea"`
 - Xai: `"xai"`
 - Telos: `"telos"`
@@ -67,20 +67,16 @@ Testnet
 - Ethereum Holesky: `"eth_holesky"`
 - Avalanche Fuji: `"avalanche_fuji"`
 - Polygon Amoy: `"polygon_amoy"`
-- Optimism Testnet: `"optimism_testnet"`
+- Optimism Sepolia: `"optimism_sepolia"`
 - Base Sepolia: `"base_sepolia"`
 - Story Aeneid Testnet: `"story_aeneid_testnet"`
 
-Appchain
-
-- META Apes: `"bas_metaapes"`
-
 Appchain Testnet
 
-- META Apes Testnet: `"bas_metaapes_testnet"`
 - Neura Devnet `"neura_devnet"`
 - Neura Testnet `"neura_testnet_v1"`
-- Incentiv Devnet `"incentiv_devnet"`
+- Incentiv Devnet `"incentiv_devnet_v3"`
+- Incentiv Testnet `"incentiv_testnet"`
 
 ## Available methods
 
@@ -89,9 +85,6 @@ Appchain Testnet
 Early Access
 
 - [`getTokenPriceHistory`](#gettokenpricehistory)
-- [`getAccountBalanceHistorical`](#getaccountbalancehistorical)
-- [`getInternalTransactionsByBlockNumber`](#getinternaltransactionsbyblocknumber)
-- [`getInternalTransactionsByParentHash`](#getinternaltransactionsbyparenthash)
 
 Token API
 
@@ -199,24 +192,6 @@ const balances = async () => {
   return await provider.getAccountBalance({
     blockchain: 'eth',
     walletAddress: '0xfa9019df60d3c710d7d583b2d69e18d412257617',
-  });
-};
-```
-
-#### `getAccountBalanceHistorical`
-
-Get the coin and token balances of the wallet at specified block.
-
-```javascript
-const balances = async () => {
-  return await provider.getAccountBalanceHistorical({
-      blockchain: 'eth', 
-      walletAddress: 'vitalik.eth',
-      onlyWhitelisted: false,
-      blockHeight: 17967813,
-      pageSize: 10,
-      nativeFirst: false,
-      pageToken: 'B',
   });
 };
 ```
@@ -331,34 +306,6 @@ const tokenPriceHistory = async () => {
       toTimestamp: 1696970653,
       interval: 100,
       limit: 10,
-  });
-};
-```
-
-#### `getInternalTransactionsByBlockNumber`
-
-Get a list of internal transactions in the block.
-
-```javascript
-const internalTransactions = async () => {
-  return await provider.getInternalTransactionsByBlockNumber({ 
-      blockchain: 'eth',
-      blockNumber: 10000000,
-      onlyWithValue: true,
-  });
-};
-```
-
-#### `getInternalTransactionsByParentHash`
-
-Get a list of internal transactions in the transaction.
-
-```javascript
-const internalTransactions = async () => {
-  return await provider.getInternalTransactionsByParentHash({ 
-      blockchain: 'eth',
-      parentTransactionHash: '0xa50f8744e65cb76f66f9d54499d5401866a75d93db2e784952f55205afc3acc5',
-      onlyWithValue: true,
   });
 };
 ```

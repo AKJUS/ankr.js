@@ -30,17 +30,12 @@ import {
     GetTransfersRequest,
     GetTokenPriceHistoryRequest,
     GetTokenPriceHistoryReply,
-    GetInternalTransactionsByBlockNumberRequest,
-    GetInternalTransactionsReply,
-    GetInternalTransactionsByParentHashRequest,
     GetInteractionsRequest,
     GetInteractionsReply,
     ExplainTokenPriceRequest,
     ExplainTokenPriceReply,
     GetBlockchainStatsRequest,
-    GetBlockchainStatsReply,
-    GetAccountBalanceHistoricalRequest,
-    GetAccountBalanceHistoricalReply
+    GetBlockchainStatsReply
 } from "./types";
 
 type JsonRPCPayload = { error?: { code?: number, data?: any, message?: string }, result?: any };
@@ -193,33 +188,6 @@ export class AnkrProvider {
      */
     async getTokenPriceHistory(params: GetTokenPriceHistoryRequest): Promise<GetTokenPriceHistoryReply> {
         return this.send<GetTokenPriceHistoryReply>("ankr_getTokenPriceHistory", params)
-    }
-
-    /**
-     * Returns coin and token balances of the wallet at specified block.
-     * @param params A GetAccountBalanceHistoricalRequest object.
-     * @returns Promise<GetAccountBalanceHistoricalReply>
-     */
-    async getAccountBalanceHistorical(params: GetAccountBalanceHistoricalRequest): Promise<GetAccountBalanceHistoricalReply> {
-        return this.send<GetAccountBalanceHistoricalReply>("ankr_getAccountBalanceHistorical", params)
-    }
-
-    /**
-     * Returns list of internal transactions.
-     * @param params A GetInternalTransactionsByBlockNumberRequest object.
-     * @returns Promise<GetInternalTransactionsReply>
-     */
-    async getInternalTransactionsByBlockNumber(params: GetInternalTransactionsByBlockNumberRequest): Promise<GetInternalTransactionsReply> {
-        return this.send<GetInternalTransactionsReply>("ankr_getInternalTransactionsByBlockNumber", params)
-    }
-
-    /**
-     * Returns list of internal transactions in the block.
-     * @param params A GetInternalTransactionsByParentHashRequest object.
-     * @returns Promise<GetInternalTransactionsReply>
-     */
-    async getInternalTransactionsByParentHash(params: GetInternalTransactionsByParentHashRequest): Promise<GetInternalTransactionsReply> {
-        return this.send<GetInternalTransactionsReply>("ankr_getInternalTransactionsByParentHash", params)
     }
 
     /**
