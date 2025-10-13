@@ -488,61 +488,7 @@ export interface ExplainTokenPriceReply {
     pairs: ExplainTokenPriceSinglePair[];
     priceEstimates: PriceEstimate[];
 }
-export interface GetInternalTransactionsByParentHashRequest {
-    blockchain: Blockchain;
-    parentTransactionHash: string;
-    onlyWithValue: boolean;
-    syncCheck?: boolean;
-}
-export interface GetInternalTransactionsByBlockNumberRequest {
-    blockchain: Blockchain;
-    blockNumber: number;
-    onlyWithValue: boolean;
-    syncCheck?: boolean;
-}
-export interface InternalTransaction {
-    blockchain: Blockchain;
-    callType: string;
-    transactionHash: string;
-    blockHeight: number;
-    blockHash: string;
-    fromAddress: string;
-    contractAddress?: string;
-    toAddress: string;
-    value: string;
-    gas: number;
-    gasUsed: number;
-    timestamp: string;
-    transactionIndex: number;
-    callPath?: string;
-    callStack?: number[];
-    error?: string;
-    input: string;
-    output: string;
-}
-export interface GetInternalTransactionsReply {
-    internalTransactions: InternalTransaction[];
-    nextPageToken?: string;
-}
-export interface GetAccountBalanceHistoricalRequest {
-    blockchain?: Blockchain | (Blockchain)[];
-    walletAddress: string;
-    onlyWhitelisted?: boolean;
-    nativeFirst?: boolean;
-    pageToken?: string;
-    pageSize?: number;
-    blockHeight?: number | "latest" | "earliest";
-    syncCheck?: boolean;
-}
-export interface GetAccountBalanceHistoricalReply {
-    nextPageToken?: string;
-    totalBalanceUsd: string;
-    totalCount: number;
-    assets: Balance[];
-    syncStatus?: SyncStatus;
-    blockHeight?: number | "latest" | "earliest";
-}
-export type Blockchain =
+export type Blockchain = 
     | 'arbitrum'
     | 'avalanche'
     | 'avalanche_fuji'
@@ -555,19 +501,19 @@ export type Blockchain =
     | 'fantom'
     | 'flare'
     | 'gnosis'
-    | 'incentiv_devnet'
+    | 'incentiv_devnet_v3'
+    | 'incentiv_testnet'
     | 'linea'
     | 'neura_devnet'
     | 'neura_testnet_v1'
     | 'optimism'
-    | 'optimism_testnet'
+    | 'optimism_sepolia'
     | 'polygon'
     | 'polygon_amoy'
     | 'polygon_zkevm'
     | 'rollux'
     | 'scroll'
-    | 'story_mainnet'
-    | 'story_aeneid_testnet'
+    | 'stellar'
     | 'syscoin'
     | 'telos'
     | 'xai'
