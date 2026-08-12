@@ -20,7 +20,6 @@
     "start": "tsc --watch",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test test/*.test.ts",
-    "test:axios-parity": "bash scripts/axios-parity.sh",
     "prepublishOnly": "yarn typecheck && yarn test"
   },
   "repository": "https://github.com/Ankr-network/ankr.js.git",
