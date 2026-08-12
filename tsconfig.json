@@ -8,7 +8,8 @@
     "moduleResolution": "Node",
     "outDir": "./dist",
     "sourceMap": true,
-    "lib": ["es2015", "dom"]
+    "lib": ["es2015", "dom"],
+    "types": []
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
