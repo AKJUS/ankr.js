@@ -22,7 +22,7 @@
     "test": "tsx --test test/*.test.ts",
     "prepublishOnly": "yarn typecheck && yarn test"
   },
-  "repository": "https://github.com/Ankr-network/ankr.js.git",
+  "repository": "https://github.com/w3tech/ankr.js.git",
   "author": "Ankr",
   "license": "MIT",
   "dependencies": {
