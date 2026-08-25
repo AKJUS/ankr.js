@@ -3,6 +3,9 @@ name: Publish
 on:
   release:
     types: [released, prereleased]
+  # A retry path. Without it, a failed release run can only be retried by moving
+  # or recreating the tag, because the run is bound to the ref that fired it.
+  workflow_dispatch: {}
 
 permissions:
   contents: read
@@ -26,12 +29,20 @@ jobs:
           # exchange, not a leftover from the token era.
           registry-url: https://registry.npmjs.org
       - run: yarn install --frozen-lockfile
+        env:
+          # setup-node's registry-url writes an .npmrc containing
+          # `_authToken=${NODE_AUTH_TOKEN}`, and yarn 1 fails outright when it
+          # cannot expand that variable rather than ignoring the line. The publish
+          # step below deliberately has no token, so the variable is unset and
+          # yarn dies before installing anything. Nothing here needs registry
+          # auth: every dependency is public, so a placeholder is enough. The
+          # publish step keeps no env, which is what makes it use OIDC.
+          NODE_AUTH_TOKEN: unused
       - run: yarn build
-      # No `env:` and no NODE_AUTH_TOKEN. The token this workflow used stopped
-      # working because the account it belonged to is no longer a maintainer of the
-      # package, which is a failure mode a stored credential has and OIDC does not:
-      # npm mints a credential per run, bound on the npm side to this repository,
-      # this workflow file name and this ref.
+      # No `env:` and no NODE_AUTH_TOKEN: npm mints a credential per run from the
+      # OIDC token, bound on the npm side to this repository and workflow file.
+      # The placeholder on the install step above is step-scoped and not visible
+      # here, which is what keeps this step on OIDC.
       #
       # `npm publish` rather than `yarn publish`: yarn 1 cannot do OIDC, and it also
       # treats `publish` as a version-bumping command that prompts for input.
