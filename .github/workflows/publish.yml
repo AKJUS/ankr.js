@@ -4,18 +4,39 @@ on:
   release:
     types: [released, prereleased]
 
+permissions:
+  contents: read
+  # The credential. npm exchanges the OIDC token minted here for a short-lived,
+  # single-publish registry token, so without this the publish cannot authenticate
+  # at all. It is also what lets npm attach a provenance attestation.
+  id-token: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 18
+          # Trusted publishing needs npm >= 11.5.1 on Node >= 22.14.0. Node 18 is
+          # also past end of life and its bundled npm predates OIDC entirely.
+          node-version: 24
+          # Still required: it is what points npm at the registry for the token
+          # exchange, not a leftover from the token era.
           registry-url: https://registry.npmjs.org
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn build
-      - run: yarn publish --access public ${{ github.event.release.prerelease && '--tag alpha' || '' }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+      # No `env:` and no NODE_AUTH_TOKEN. The token this workflow used stopped
+      # working because the account it belonged to is no longer a maintainer of the
+      # package, which is a failure mode a stored credential has and OIDC does not:
+      # npm mints a credential per run, bound on the npm side to this repository,
+      # this workflow file name and this ref.
+      #
+      # `npm publish` rather than `yarn publish`: yarn 1 cannot do OIDC, and it also
+      # treats `publish` as a version-bumping command that prompts for input.
+      #
+      # Provenance is left ON, which is why `repository` in package.json had to stop
+      # pointing at the old Ankr-network URL: npm requires it to match the repository
+      # the publish runs from, and fails the publish otherwise.
+      - run: npm publish --access public ${{ github.event.release.prerelease && '--tag alpha' || '' }}
