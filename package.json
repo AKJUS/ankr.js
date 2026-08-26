@@ -20,7 +20,7 @@
     "start": "tsc --watch",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test test/*.test.ts",
-    "prepublishOnly": "yarn typecheck && yarn test"
+    "prepublishOnly": "npm run typecheck && npm run test"
   },
   "repository": "https://github.com/w3tech/ankr.js.git",
   "author": "Ankr",

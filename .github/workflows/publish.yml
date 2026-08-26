@@ -28,17 +28,17 @@ jobs:
           # Still required: it is what points npm at the registry for the token
           # exchange, not a leftover from the token era.
           registry-url: https://registry.npmjs.org
+      # yarn is used for the install only, because the lockfile is yarn's. Every
+      # other script runs through npm: setup-node's registry-url writes an .npmrc
+      # holding `_authToken=${NODE_AUTH_TOKEN}`, npm tolerates that variable being
+      # unset and yarn 1 exits with an error instead of ignoring the line. The
+      # publish step has no token by design, so the variable is unset for the whole
+      # job, and a step-scoped placeholder here is enough to get yarn through.
+      # Nothing in this install needs registry auth: every dependency is public.
       - run: yarn install --frozen-lockfile
         env:
-          # setup-node's registry-url writes an .npmrc containing
-          # `_authToken=${NODE_AUTH_TOKEN}`, and yarn 1 fails outright when it
-          # cannot expand that variable rather than ignoring the line. The publish
-          # step below deliberately has no token, so the variable is unset and
-          # yarn dies before installing anything. Nothing here needs registry
-          # auth: every dependency is public, so a placeholder is enough. The
-          # publish step keeps no env, which is what makes it use OIDC.
           NODE_AUTH_TOKEN: unused
-      - run: yarn build
+      - run: npm run build
       # No `env:` and no NODE_AUTH_TOKEN: npm mints a credential per run from the
       # OIDC token, bound on the npm side to this repository and workflow file.
       # The placeholder on the install step above is step-scoped and not visible
