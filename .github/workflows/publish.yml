@@ -17,6 +17,11 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # The npm trusted publisher for @ankr.com/ankr.js is bound to this
+    # environment, so the OIDC token has to carry it. Without the claim npm
+    # does not recognise the publisher, no registry token is issued, and the
+    # upload goes out unauthenticated and comes back 404.
+    environment: prod
 
     steps:
       - uses: actions/checkout@v7
